@@ -6,7 +6,7 @@ import socket
 import sys
 
 app = Flask(__name__)
-
+@app.route("/")
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
 
