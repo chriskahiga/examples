@@ -6,5 +6,5 @@ ADD /azure-vote /app
 RUN pip install redis && cp -f /app/conf/uwsgi.ini /etc/uwsgi/uwsgi.ini\
 && chmod -R g+rwx /var/log/supervisor\
 && chmod -R g+rwx /var/cache/nginx /var/log/nginx /etc/nginx/\
-&& chgrp -R 0 /var/run && chmod -R g=u /var/run\
+&& chgrp -R 0 /var/run && chmod -R g=u /var/run
 
