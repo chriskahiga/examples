@@ -99,4 +99,4 @@ def index():
             return render_template("index.html", value1=int(vote1), value2=int(vote2), value3=int(vote3), button1=button1, button2=button2, button4=button4, question=question, title=title)
 
 if __name__ == "__main__":
-    application.run()
+    application.run(host='0.0.0.0', port=8080, debug=True)
