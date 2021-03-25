@@ -5,24 +5,34 @@ import redis
 import socket
 import sys
 
-app = Flask(__name__)
+application = Flask(__name__)
 # Load configurations from environment or config file
-app.config.from_pyfile('config_file.cfg')
+application.config.from_pyfile('config_file.cfg')
 
 if ("VOTE1VALUE" in os.environ and os.environ['VOTE1VALUE']):
     button1 = os.environ['VOTE1VALUE']
 else:
-    button1 = app.config['VOTE1VALUE']
+    button1 = application.config['VOTE1VALUE']
 
 if ("VOTE2VALUE" in os.environ and os.environ['VOTE2VALUE']):
     button2 = os.environ['VOTE2VALUE']
 else:
-    button2 = app.config['VOTE2VALUE']
+    button2 = application.config['VOTE2VALUE']
+
+if ("VOTE3VALUE" in os.environ and os.environ['VOTE3VALUE']):
+    button4 = os.environ['VOTE3VALUE']
+else:
+    button4 = application.config['VOTE3VALUE']
+
+if ("QTN" in os.environ and os.environ['QTN']):
+    question = os.environ['QTN']
+else:
+    question = application.config['QTN']
 
 if ("TITLE" in os.environ and os.environ['TITLE']):
     title = os.environ['TITLE']
 else:
-    title = app.config['TITLE']
+    title = application.config['TITLE']
 
 # Redis configurations
 redis_server = os.environ['REDIS']
@@ -40,24 +50,26 @@ except redis.ConnectionError:
     exit('Failed to connect to Redis, terminating.')
 
 # Change title to host name to demo NLB
-if app.config['SHOWHOST'] == "true":
+if application.config['SHOWHOST'] == "true":
     title = socket.gethostname()
 
 # Init Redis
 if not r.get(button1): r.set(button1,0)
 if not r.get(button2): r.set(button2,0)
+if not r.get(button4): r.set(button4,0)
 
-@app.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def index():
 
     if request.method == 'GET':
 
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
-        vote2 = r.get(button2).decode('utf-8')            
+        vote2 = r.get(button2).decode('utf-8')
+        vote3 = r.get(button4).decode('utf-8')            
 
         # Return index with values
-        return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+        return render_template("index.html", value1=int(vote1), value2=int(vote2), value3=int(vote3), button1=button1, button2=button2, button4=button4, question=question, title=title)
 
     elif request.method == 'POST':
 
@@ -66,9 +78,11 @@ def index():
             # Empty table and return results
             r.set(button1,0)
             r.set(button2,0)
+            r.set(button4,0)
             vote1 = r.get(button1).decode('utf-8')
             vote2 = r.get(button2).decode('utf-8')
-            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+            vote3 = r.get(button4).decode('utf-8')
+            return render_template("index.html", value1=int(vote1), value2=int(vote2), value3=int(vote3), button1=button1, button2=button2, button4=button4, question=question, title=title)
         
         else:
 
@@ -78,10 +92,11 @@ def index():
             
             # Get current values
             vote1 = r.get(button1).decode('utf-8')
-            vote2 = r.get(button2).decode('utf-8')  
+            vote2 = r.get(button2).decode('utf-8')
+            vote3 = r.get(button4).decode('utf-8')  
                 
             # Return results
-            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+            return render_template("index.html", value1=int(vote1), value2=int(vote2), value3=int(vote3), button1=button1, button2=button2, button4=button4, question=question, title=title)
 
 if __name__ == "__main__":
-    app.run()
+    application.run()

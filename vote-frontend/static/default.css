@@ -66,24 +66,33 @@ div#results {
 .button1 {
     background-color: white; 
     color: black; 
-    border: 2px solid #008CBA;
+    border: 2px solid #00ba63;
 }
 
 .button1:hover {
-    background-color: #008CBA;
+    background-color: #00ba63;
     color: white;
 }
 .button2 {
     background-color: white;
     color: black;
-    border: 2px solid #555555;
+    border: 2px solid #696bfd;
 }
 
 .button2:hover {
-    background-color: #555555;
+    background-color: #696bfd;
     color: white;
 }
+.button4 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #757575;
+}
 
+.button4:hover {
+    background-color: #757575;
+    color: white;
+}
 .button3 {
     background-color: white; 
     color: black; 
